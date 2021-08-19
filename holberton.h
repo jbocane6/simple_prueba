@@ -16,5 +16,8 @@ int count_until(char *strUntil, char *str);
 char *cp_until(char *strUntil, char *strToCopy);
 int count_words(char *strDelim, char *str);
 void grid(char **exp, char *cpStr, int *l);
+void fill(char *test, char **strfather, int *l);
+int count(char *test);
+char *readline();
 
 #endif
