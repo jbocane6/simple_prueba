@@ -50,3 +50,39 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+#ignore all files in each directory
+*/*
+
+#unignore .c files in each directory
+!*/*.c
+
+#unignore .h header files in each directory
+!*/*.h
+
+#unignore .o files in each directory
+!*/*.o
+
+#unignore .a files in each directory
+!*/*.a
+
+#unignore .md files in each directory
+!*/*.md
+
+#unignore .sh files in each directory
+!*/*.sh
+
+
+#unignore .gitignore
+!.gitignore
+
+#ignore compiled files
+*-main.c
+*main.c
+
+#ignore backup files
+*.*~
+
+#ignore clion files
+.idea
+CMakeLists.txt
