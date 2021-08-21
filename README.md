@@ -1,2 +1,2 @@
-# simple_prueba
-Repository with copied files for simple_shell repository
+# simple2
+simple repository

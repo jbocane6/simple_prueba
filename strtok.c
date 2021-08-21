@@ -48,17 +48,27 @@ int count_words(char *strDelim, char *str)
 	return (count_words(strDelim, str + 1));
 }
 
-void grid(char **exp, char *cpStr, int *l)
+char **_strtok(char *str, char *delim)
 {
-	int k, size = strlen(cpStr);
+	char **arrayWords;
+	int indexWords = 0;
+	int sizeWords = count_words(delim, str), i = 0;
 
-	exp[*l] = malloc(sizeof(char) * size + 1);
-	if (!exp[*l])
+	arrayWords = malloc(sizeof(char *) * sizeWords + 1);
+	if (!arrayWords)
+		dprintf(err, "ERROR malloc 1"),	exit(100);
+
+	while (str[i])
 	{
-		printf("ERROR malloc");
-		exit(100);
+		if (!include_char(delim, str[i]))
+		{
+			arrayWords[indexWords] = cp_until(delim, str + i);
+			i += count_until(delim, str + i);
+			indexWords++;
+		}
+		else
+			i++;
 	}
-	for (k = 0; k < size; k++)
-		exp[*l][k] = cpStr[k];
-	*l += 1;
+	arrayWords[indexWords] = NULL;
+	return (arrayWords);
 }
