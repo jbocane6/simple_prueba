@@ -1,6 +1,7 @@
 #ifndef _HEADER_SHELL_
 #define _HEADER_SHELL_
 
+#define _GNU_SOURCE
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -17,16 +18,18 @@
 #define DELIM " "
 #define STRPATH _strtok(get_environ("PATH"), ":")
 
+
 int include_char(char *str, char character);
 int count_until(char *strUntil, char *str);
 char *cp_until(char *strUntil, char *strToCopy);
 int count_words(char *strDelim, char *str);
 char **_strtok(char *str, char *delim);
 int count(char *test);
-char *readline();
-void statPath(char **strfather);
-void callExe(char **strfather);
+int readline(char **lineptr, int *lineptrSize);
+int statPath(char **strfather);
+int callExe(char **strfather);
 char *get_environ(char *pathName);
 char *combine(char *command, char **splitPath);
+int validateMainFunctions(char **strfather);
 
 #endif

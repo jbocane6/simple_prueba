@@ -49,20 +49,18 @@ char *combine(char *command, char **splitPath)
 	return (NULL);
 }
 
-void statPath(char **strfather)
+int statPath(char **strfather)
 {
 	struct stat st;
 	if (stat(strfather[0], &st) == 0)
-		callExe(strfather);
+	{
+		return (callExe(strfather));
+	}
 	else
 	{
 		strfather[0] = combine(strfather[0], STRPATH);
 		if (strfather[0])
-		{
-			statPath(strfather);
-			exit(0);
-
-		}
+			return (statPath(strfather));
 	}
-	
+	return (1);
 }

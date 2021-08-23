@@ -1,33 +1,23 @@
 #include "holberton.h"
 
-static int FLAG = 0;
 extern char **environ;
 
-void changeFlag(void)
-{
-	FLAG = 1;
-}
-
-void validateMainFunctions(char **strfather)
+int validateMainFunctions(char **strfather)
 {
 	if (strcmp(strfather[0], "exit") == 0)
-	{
-		changeFlag();
-		exit(100);
-	}
-	statPath(strfather);
+		return (0);
+	return (statPath(strfather));
 }
 
-void callExe(char **strfather)
+int callExe(char **strfather)
 {
 	pid_t child;
 	child = fork();
 
-	printf("SI llega al exenev\n");
 	if (child == -1)
 	{
 		perror("Error:");
-		return;
+		return (0);
 	}
 	if (child == 0)
 	{
@@ -37,27 +27,30 @@ void callExe(char **strfather)
 	}
 	else
 		wait(0);
+
+	return (1);
 }
 
 int main(void)
 {
-	int cfather;
+	int cfather, flag = 1, size = 1024;
 	char *strReceived, **strfather = NULL;
-	
-	while (FLAG == 0)
+
+	while (flag > 0)
 	{
-		strReceived = readline();
-		if (!strReceived)
-			exit(99);
+		size = readline(&strReceived, &size);
+		if (size > 0)
+		{
+			cfather = count_words(DELIM, strReceived);
 
-		cfather = count_words(DELIM, strReceived);
+			strfather = malloc(sizeof(char *) * cfather + 1);
+			if (!strfather)
+				dprintf(err, "ERROR malloc"), exit(100);
 
-		strfather = malloc(sizeof(char *) * cfather + 1);
-		if (!strfather)
-			dprintf(err, "ERROR malloc"), exit(100);
-
-		strfather =_strtok(strReceived, DELIM);
-		validateMainFunctions(strfather);
+			strfather =_strtok(strReceived, DELIM);
+			flag = validateMainFunctions(strfather);
+			free(strReceived);
+		}
 	}
 	return (0);
 }
