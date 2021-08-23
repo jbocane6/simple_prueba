@@ -6,6 +6,8 @@ int validateMainFunctions(char **strfather)
 {
 	if (strcmp(strfather[0], "exit") == 0)
 		return (0);
+	if (strcmp(strfather[0], "cd") == 0)
+        chdir(strfather[1]);	
 	return (statPath(strfather));
 }
 
@@ -27,6 +29,7 @@ int callExe(char **strfather)
 {
 	char stringDir[1024];
 	pid_t child;
+
 	child = fork();
 
 	if (child == -1)
@@ -51,7 +54,7 @@ int callExe(char **strfather)
 
 int main(void)
 {
-	int cfather, flag = 1, size = 1024;
+	int flag = 1, size;
 	char *strReceived, **strfather = NULL;
 
 	while (flag > 0)
@@ -59,8 +62,6 @@ int main(void)
 		size = readline(&strReceived, &size);
 		if (size > 0)
 		{
-			cfather = count_words(DELIM, strReceived);
-
 			strfather = _strtok(strReceived, DELIM);
 			flag = validateMainFunctions(strfather);
 			free(strReceived);
