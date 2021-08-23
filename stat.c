@@ -1,16 +1,21 @@
 #include "holberton.h"
 
+char *freesplit(char **splitPath, char *commandCombine)
+{
+	arrayFree(splitPath);
+	free(splitPath);
+	return (commandCombine);
+}
+
 char *combine(char *command, char **splitPath)
 {
-	int i = 0, j = 0, k = 0, sizeCommand, sizeSplitPath;
-	int sizeTotal, flag = 0, flag2 = 0;
+	int i = 0, j = 0, k = 0, sizeTotal, flag = 0, flag2 = 0;
 	struct stat st;
 	char *commandCombine;
+
 	while (splitPath[i])
 	{
-		sizeCommand = _strlen(command) + 1;
-		sizeSplitPath = _strlen(splitPath[i]) + 1;
-		sizeTotal = sizeCommand + sizeSplitPath;
+		sizeTotal = _strlen(command) + 1 + _strlen(splitPath[i]) + 1;
 		commandCombine = malloc(sizeof(char) * (sizeTotal));
 		if (!commandCombine)
 			return (NULL);
@@ -38,17 +43,11 @@ char *combine(char *command, char **splitPath)
 		k = 0;
 		commandCombine[j] = '\0';
 		if (stat(commandCombine, &st) == 0)
-		{
-			arrayFree(splitPath);
-			free(splitPath);
-			return (commandCombine);
-		}
+			return (freesplit(splitPath, commandCombine));
 		free(commandCombine);
 		i++;
 	}
-	arrayFree(splitPath);
-	free(splitPath);
-	return (NULL);
+	return (freesplit(splitPath, NULL));
 }
 
 int statPath(char **strfather)
