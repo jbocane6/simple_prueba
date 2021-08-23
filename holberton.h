@@ -33,5 +33,6 @@ char *get_environ(char *pathName);
 char *combine(char *command, char **splitPath);
 int validateMainFunctions(char **strfather);
 void arrayFree(char **array);
+char *freesplit(char **splitPath, char *commandCombine);
 
 #endif
