@@ -18,7 +18,8 @@
 #define DELIM " "
 #define STRPATH _strtok(get_environ("PATH"), ":")
 
-
+int _strlen(char *s);
+char *_strcat(char *dest, char *src);
 int include_char(char *str, char character);
 int count_until(char *strUntil, char *str);
 char *cp_until(char *strUntil, char *strToCopy);
@@ -31,5 +32,6 @@ int callExe(char **strfather);
 char *get_environ(char *pathName);
 char *combine(char *command, char **splitPath);
 int validateMainFunctions(char **strfather);
+void arrayFree(char **array);
 
 #endif

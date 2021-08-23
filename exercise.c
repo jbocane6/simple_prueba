@@ -9,8 +9,23 @@ int validateMainFunctions(char **strfather)
 	return (statPath(strfather));
 }
 
+char *move_last_until(char *string, char last)
+{
+	char *result = NULL;
+
+	if (!string || !*string)
+		return (NULL);
+	result = move_last_until(string + 1, last);
+	if (result != NULL)
+		return (result);
+	if (*string == last)
+		return (string + 1);
+	return (NULL);
+}
+
 int callExe(char **strfather)
 {
+	char stringDir[1024];
 	pid_t child;
 	child = fork();
 
@@ -21,7 +36,10 @@ int callExe(char **strfather)
 	}
 	if (child == 0)
 	{
-		if (execve(strfather[0], strfather, NULL) == -1)
+		stringDir[0] = '\0';
+		_strcat(stringDir, strfather[0]);
+		strfather[0] = move_last_until(strfather[0], '/');
+		if (execve(stringDir, strfather, NULL) == -1)
 			perror("Error");
 		exit(0);
 	}
@@ -43,11 +61,7 @@ int main(void)
 		{
 			cfather = count_words(DELIM, strReceived);
 
-			strfather = malloc(sizeof(char *) * cfather + 1);
-			if (!strfather)
-				dprintf(err, "ERROR malloc"), exit(100);
-
-			strfather =_strtok(strReceived, DELIM);
+			strfather = _strtok(strReceived, DELIM);
 			flag = validateMainFunctions(strfather);
 			free(strReceived);
 		}

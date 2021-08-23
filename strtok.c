@@ -72,3 +72,13 @@ char **_strtok(char *str, char *delim)
 	arrayWords[indexWords] = NULL;
 	return (arrayWords);
 }
+
+void arrayFree(char **array)
+{
+	if (!array || !*array)
+	{
+		return;
+	}
+	arrayFree(array + 1);
+	free(*array);
+}
