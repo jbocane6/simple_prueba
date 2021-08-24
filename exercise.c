@@ -2,12 +2,45 @@
 
 extern char **environ;
 
-int validateMainFunctions(char **strfather)
+void freestr(char **strfather, char *strReceived)
 {
+	arrayFree(strfather);
+	free(strfather);
+	free(strReceived);
+}
+
+int validateMainFunctions(char **strfather, char *strReceived, int character)
+{
+	int i = character;
+
 	if (strcmp(strfather[0], "exit") == 0)
-		return (0);
+	{
+		if (i > 1)
+		{
+			i = _atoi(strfather[1]);
+			freestr(strfather, strReceived);
+			exit(i);
+		}
+		else
+		{
+			freestr(strfather, strReceived);
+			exit(0);
+		}
+	}
 	if (strcmp(strfather[0], "cd") == 0)
-        chdir(strfather[1]);	
+	{
+		chdir(strfather[1]);
+		return (1);
+	}
+	if (strcmp(strfather[0], "env") == 0)
+	{
+		for (i = 0; environ[i]; i++)
+		{
+			write(err, environ[i], _strlen(environ[i]));
+			write(err, "\n", 1);
+		}
+		return (1);
+	}
 	return (statPath(strfather));
 }
 
@@ -29,7 +62,6 @@ int callExe(char **strfather)
 {
 	char stringDir[1024];
 	pid_t child;
-
 	child = fork();
 
 	if (child == -1)
@@ -54,18 +86,19 @@ int callExe(char **strfather)
 
 int main(void)
 {
-	int flag = 1, size;
-	char *strReceived, **strfather = NULL;
+	int cfather, flag = 1, size = 1024, character = 0;
 
-	while (flag > 0)
+	while (flag > 0 && flag < 2)
 	{
-		size = readline(&strReceived, &size);
-		if (size > 0)
+		char *strReceived = NULL, **strfather = NULL;
+		character = readline(&strReceived, &size);
+		if (character > 0)
 		{
+			character = count_words(DELIM, strReceived);
 			strfather = _strtok(strReceived, DELIM);
-			flag = validateMainFunctions(strfather);
-			free(strReceived);
+			flag = validateMainFunctions(strfather, strReceived, character);
 		}
+		freestr(strfather, strReceived);
 	}
-	return (0);
+	return (flag);
 }

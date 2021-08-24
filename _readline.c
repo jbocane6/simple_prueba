@@ -2,7 +2,7 @@
 
 void ctrap(int sig)
 {
-	write(1, "\n", sig -1);
+	write(1, "\n", sig - 1);
 	write(1, "$ ", 2);
 }
 

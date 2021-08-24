@@ -22,8 +22,8 @@ int count_until(char *strUntil, char *str)
 
 char *cp_until(char *strUntil, char *strToCopy)
 {
-	int count = count_until(strUntil, strToCopy) , i = 0;
-	char *newStr = malloc(sizeof(char) * count);
+	int count = count_until(strUntil, strToCopy), i = 0;
+	char *newStr = malloc(sizeof(char) * count + 1);
 
 	if (!newStr)
 		return (NULL);
@@ -50,13 +50,16 @@ int count_words(char *strDelim, char *str)
 
 char **_strtok(char *str, char *delim)
 {
-	char **arrayWords;
+	char **arrayWords = NULL;
 	int indexWords = 0;
-	int sizeWords = count_words(delim, str), i = 0;
+	int sizeWords = 0, i = 0;
 
-	arrayWords = malloc(sizeof(char *) * sizeWords + 1);
+	if (!str || !delim)
+		return (NULL);
+	sizeWords = count_words(delim, str);
+	arrayWords = malloc(sizeof(char *) * (sizeWords + 1));
 	if (!arrayWords)
-		dprintf(err, "ERROR malloc 1"),	exit(100);
+		dprintf(err, "ERROR malloc 1"), exit(100);
 
 	while (str[i])
 	{
